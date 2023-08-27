@@ -1,0 +1,136 @@
+FORMAT: 1A
+HOST: http://localhost:3000
+
+# Kanban
+
+The Kanban API allows you to manage tasks organised by columns and sub-tasks
+
+## Boards Collection [/boards]
+
+### List All Boards [GET]
+    
++ Response 200 (application/json)
+    + Attributes (array[Board])
+
+
+### Create new board [POST]
+
++ Request 
+    + Attributes (Board)
+    
++ Response 201 (application/json)
+    + Attributes (Board)
+
+
+## Board [/boards/{boardId}]
+
++ Parameters 
+    + boardId: ABC123 (string) - Unique ID for the board 
+
+### Edit a board [PUT]
+
++ Request 
+    + Attributes 
+        + name: "Build a House" (string) - Updated name for the board
+    
++ Response 200 (application/json)
+    + Attributes (Board) 
+
+
+### Delete a board [DELETE]
+
+    
++ Response 200 (application/json)
+    + Attributes (Board) 
+
+
+## Columns Collection [/boards/{boardId}/columns] 
+
++ Parameters 
+    + boardId: ABC123 (string) - Unique ID for the board 
+
+### Create new Column [POST]
+
++ Request 
+    + Attributes (Column)
+    
++ Response 201 (application/json)
+    + Attributes (Column)
+
+
+## Column [/boards/{boardId}/column/{columnId}]
+
++ Parameters 
+    + boardId: ABC123 (string) - Unique ID for the board 
+    + columnId: ABC123 (string) - Unique ID for the column
+
+### Edit a Column [PUT]
+
++ Request 
+    + Attributes 
+        + name: New (string) - New Name for a column
+    
++ Response 200 (application/json)
+    + Attributes (Column)
+
+### Delete a Column [DELETE]
+   
++ Response 200 (application/json)
+    + Attributes (Column)
+
+
+## Tasks Collection [/boards/{boardId}/columns/{columnId}/tasks] 
+
++ Parameters 
+    + boardId: ABC123 (string) - Unique ID for the board 
+    + columnId: ABC123 (string) - Unique ID for the column
+
+### Create new Task [POST]
++ Request 
+    + Attributes (Task)
+    
++ Response 201 (application/json)
+    + Attributes (Task)
+
+## Task [/boards/{boardId}/columns/{columnId}/tasks/{taskId}]
+
++ Parameters 
+    + boardId: ABC123 (string) - Unique ID for the board 
+    + columnId: ABC123 (string) - Unique ID for the column
+    + taskId: ABC123 (string) - Unique ID for the task
+
+### Edit a Task [PUT] 
++ Request 
+    + Attributes (Task)
+    
++ Response 200 (application/json)
+    + Attributes (Task)
+
+### Delete a Task [DELETE]
++ Response 200 (application/json)
+    + Attributes (Task)
+
+
+# Data Structures 
+
+## Board 
++ id: ABC123 (string) Unique ID
++ name: Platform Launch (string) - Name of the board 
++ columns (array[Column])
+
+## Column 
++ id: ABC123 (string) Unique ID
++ name: Todo (string) - Name of the column
++ color: #49C4E5 (string) - Hex code of the column color
++ tasks (array[Task])
+
+## Task 
++ id: ABC123 (string) Unique ID
++ name: Buy Eggs (string) - Name of the task
++ description: Buy a dozen eggs for the week (string, optional) - Detailed description of the task
++ status: Todo (string) - Name of the column to which it belongs 
++ subtasks (array[SubTask])
+
+## SubTask
++ title: Search for deals on eggs (string) - Name of the sub task
++ isCompleted: true (boolean) - Whether or not the task is complete
