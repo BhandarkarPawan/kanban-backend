@@ -13,15 +13,23 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  role-to-assume: arn:aws:iam::905651476777:role/github-actions-deployer
+                  aws-region: us-west-2
+
             - name: Login to Amazon ECR
               id: login-ecr
               uses: aws-actions/amazon-ecr-login@v1
               with:
-                  access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  region: us-west-2
+                  mask-password: "true"
 
             - name: Build and Push Docker image to Amazon ECR
+              env:
+                  REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                  REPOSITORY: kanban
+                  IMAGE_TAG: ${{ github.sha }}
               run: |
-                  docker build -t 905651476777.dkr.ecr.us-west-2.amazonaws.com/kanban:${{ github.sha }} .
-                  docker push 905651476777.dkr.ecr.us-west-2.amazonaws.com/kanban:${{ github.sha }}
+                  docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+                  docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
