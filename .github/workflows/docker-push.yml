@@ -1,0 +1,27 @@
+name: Push Docker image to Amazon ECR
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    push:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Login to Amazon ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v1
+              with:
+                  access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  region: us-west-2
+
+            - name: Build and Push Docker image to Amazon ECR
+              run: |
+                  docker build -t 905651476777.dkr.ecr.us-west-2.amazonaws.com/kanban:${{ github.sha }} .
+                  docker push 905651476777.dkr.ecr.us-west-2.amazonaws.com/kanban:${{ github.sha }}
