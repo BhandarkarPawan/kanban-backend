@@ -20,6 +20,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+console.log("cors enabled for all origins");
 
 app.use(logger("dev"));
 app.use(express.json());

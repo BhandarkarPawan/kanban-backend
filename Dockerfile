@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Specify the command to run when the container starts
-CMD [ "node", "app.js" ]
+CMD [ "npm", "start" ]
 
 # Expose port 3000 for the Express server
 EXPOSE 3000
